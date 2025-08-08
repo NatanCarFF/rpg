@@ -1,10 +1,9 @@
 // main.js
 
-// Importa as novas classes de cena
-// Importante: No HTML, você deve incluir os scripts de cena ANTES do main.js
-// Ex: <script src="js/scenes/GameScene.js"></script>
-//     <script src="js/scenes/GameOverScene.js"></script>
-//     <script src="js/main.js"></script>
+// Declare as variáveis globais APENAS AQUI.
+// Elas serão acessíveis em todas as cenas.
+let score = 0;
+let gameOver = false;
 
 const config = {
     type: Phaser.AUTO,
@@ -17,7 +16,6 @@ const config = {
             debug: false
         }
     },
-    // Adiciona todas as cenas ao jogo
     scene: [GameScene, Fase2Scene, Fase3Scene, Fase4Scene, GameWinScene, GameOverScene]
 };
 

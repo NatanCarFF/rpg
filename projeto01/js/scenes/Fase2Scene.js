@@ -7,8 +7,8 @@
 
 // Mantenha apenas as variáveis que precisam ser compartilhadas entre cenas,
 // ou inicialize-as dentro da própria classe.
-let score = 0;
-let gameOver = false;
+// let score = 0;
+// let gameOver = false;
 
 class Fase2Scene extends Phaser.Scene {
     constructor() {
