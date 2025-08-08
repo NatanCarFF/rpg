@@ -2,8 +2,8 @@
 
 // Declare as variáveis globais APENAS AQUI.
 // Elas serão acessíveis em todas as cenas.
-let score = 0;
-let gameOver = false;
+// let score = 0;
+// let gameOver = false;
 
 const config = {
     type: Phaser.AUTO,
