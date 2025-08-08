@@ -1,6 +1,6 @@
 // GameOverScene.js
 
-// As variáveis globais 'score' e 'gameOver' serão declaradas em main.js
+// A variável global 'score' será declarada em main.js
 // As variáveis de cena são agora propriedades da classe, usando `this.`
 
 class GameOverScene extends Phaser.Scene {

@@ -44,6 +44,7 @@ class GameWinScene extends Phaser.Scene {
         }).setOrigin(0.5).setInteractive();
 
         restartButton.on('pointerdown', () => {
+            // Reinicia o jogo a partir da primeira fase
             this.scene.start('GameScene');
         });
     }

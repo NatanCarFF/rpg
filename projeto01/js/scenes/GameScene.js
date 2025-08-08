@@ -30,7 +30,9 @@ class GameScene extends Phaser.Scene {
     create() {
         gameOver = false;
         
-        this.add.image(400, 300, 'sky');
+        // --- CÓDIGO ATUALIZADO: Imagem de fundo em tela cheia ---
+        this.add.image(0, 0, 'sky').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
+        
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
         this.platforms.create(600, 400, 'ground');

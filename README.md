@@ -63,5 +63,4 @@ Quais são os melhores canais no YouTube, blogs ou tutoriais para iniciantes em 
 
 Existem comunidades ou fóruns de discussão (como Discord ou fóruns da própria biblioteca) onde posso pedir ajuda e compartilhar meu progresso?"
 
-
 Pronto para o próximo arquivo
