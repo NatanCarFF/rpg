@@ -1,22 +1,26 @@
-// Fase2Scene.js
+// Fase3Scene.js
 
 let player;
 let platforms;
 let cursors;
 let stars;
 let bombs;
-let score = 0; // A pontuação é zerada ou carregada de um estado
+let score = 0;
 let scoreText;
 let gameOver = false;
 
-class Fase2Scene extends Phaser.Scene {
+class Fase3Scene extends Phaser.Scene {
     constructor() {
-        super({ key: 'Fase2Scene' });
+        super({ key: 'Fase3Scene' });
+    }
+
+    init(data) {
+        // Recebe a pontuação da fase anterior e a mantém
+        score = data.score;
     }
 
     preload() {
-        // A maioria dos assets já foi carregada na primeira cena, mas é uma boa prática
-        // deixar o preload aqui também caso queira adicionar assets específicos
+        // Carregamento de assets
         this.load.image('sky', 'assets/images/sky.png');
         this.load.image('ground', 'assets/images/platform.png');
         this.load.image('star', 'assets/images/star.png');
@@ -28,19 +32,19 @@ class Fase2Scene extends Phaser.Scene {
     }
 
     create() {
-        // Reseta o estado do jogo para a nova fase
         gameOver = false;
         
-        // Fundo da fase (podemos usar uma cor diferente para indicar a mudança)
-        this.add.image(400, 300, 'sky').setTint(0x78a0c2); // Tonalidade azul para a segunda fase
+        // Fundo com uma tonalidade escura para simular um desafio final
+        this.add.image(400, 300, 'sky').setTint(0x333333);
         
-        // Crie novas posições e layouts para as plataformas
+        // Layout de plataformas mais complexo
         platforms = this.physics.add.staticGroup();
         platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-        platforms.create(800, 400, 'ground');
-        platforms.create(200, 300, 'ground');
-        platforms.create(50, 450, 'ground');
-        platforms.create(700, 200, 'ground');
+        platforms.create(600, 400, 'ground');
+        platforms.create(100, 450, 'ground');
+        platforms.create(500, 250, 'ground');
+        platforms.create(750, 150, 'ground');
+        platforms.create(250, 200, 'ground');
 
         player = this.physics.add.sprite(100, 450, 'dude');
         player.setBounce(0.2);
@@ -52,18 +56,24 @@ class Fase2Scene extends Phaser.Scene {
 
         cursors = this.input.keyboard.createCursorKeys();
 
-        // Crie um novo conjunto de moedas
+        // Mais moedas para coletar
         stars = this.physics.add.group({
             key: 'star',
-            repeat: 15,
-            setXY: { x: 12, y: 0, stepX: 50 }
+            repeat: 20,
+            setXY: { x: 12, y: 0, stepX: 38 }
         });
 
         stars.children.iterate(function (child) {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
 
+        // Adiciona mais inimigos
         bombs = this.physics.add.group();
+        let x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        let bomb = bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
 
         scoreText = this.add.text(16, 16, 'Score: ' + score, { fontSize: '32px', fill: '#000' });
 
@@ -96,15 +106,15 @@ class Fase2Scene extends Phaser.Scene {
     }
 
     collectStar(player, star) {
-    star.disableBody(true, true);
-    score += 10;
-    scoreText.setText('Score: ' + score);
+        star.disableBody(true, true);
+        score += 10;
+        scoreText.setText('Score: ' + score);
 
-    if (stars.countActive(true) === 0) {
-        // Quando todas as moedas são coletadas, avança para a próxima fase
-        this.scene.start('Fase3Scene', { score: score });
+        if (stars.countActive(true) === 0) {
+            // Quando todas as moedas são coletadas na última fase, o jogo termina
+            this.scene.start('GameWinScene', { score: score });
+        }
     }
-}
 
     hitBomb(player, bomb) {
         this.physics.pause();
