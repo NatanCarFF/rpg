@@ -18,7 +18,7 @@ const config = {
         }
     },
     // Adiciona todas as cenas ao jogo
-    scene: [GameScene, GameOverScene]
+    scene: [GameScene, Fase2Scene, GameOverScene]
 };
 
 const game = new Phaser.Game(config);
