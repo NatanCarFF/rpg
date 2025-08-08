@@ -1,13 +1,7 @@
 // Fase4Scene.js
 
-// Remova as declarações globais de player, platforms, etc.
-// let player;
-// let platforms;
-// let cursors;
-// let stars;
-// let bombs;
-// let scoreText;
-
+// As variáveis globais 'score' e 'gameOver' serão declaradas em main.js
+// As variáveis de cena são agora propriedades da classe, usando `this.`
 
 class Fase4Scene extends Phaser.Scene {
     constructor() {
@@ -20,7 +14,6 @@ class Fase4Scene extends Phaser.Scene {
     }
 
     preload() {
-        // Carregamento de assets
         this.load.image('sky', 'assets/images/sky.png');
         this.load.image('ground', 'assets/images/platform.png');
         this.load.image('star', 'assets/images/star.png');
@@ -34,10 +27,8 @@ class Fase4Scene extends Phaser.Scene {
     create() {
         gameOver = false;
         
-        // Fundo com uma tonalidade avermelhada para a fase final
         this.add.image(400, 300, 'sky').setTint(0xff9999);
         
-        // Layout de plataformas mais complexo
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
         this.platforms.create(150, 400, 'ground');
@@ -53,20 +44,16 @@ class Fase4Scene extends Phaser.Scene {
         this.anims.create({ key: 'turn', frames: [{ key: 'dude', frame: 4 }], frameRate: 20 });
         this.anims.create({ key: 'right', frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }), frameRate: 10, repeat: -1 });
 
-        this.cursors = this.input.keyboard.createCursorKeys();
-
-        // Mais moedas para coletar
         this.stars = this.physics.add.group({
             key: 'star',
             repeat: 25,
             setXY: { x: 12, y: 0, stepX: 30 }
         });
 
-        this.stars.children.iterate(function (child) {
+        this.stars.children.iterate((child) => {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
 
-        // Adiciona mais inimigos
         this.bombs = this.physics.add.group();
         let x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         let bomb = this.bombs.create(x, 16, 'bomb');
@@ -81,26 +68,63 @@ class Fase4Scene extends Phaser.Scene {
         this.physics.add.collider(this.bombs, this.platforms);
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
+        
+        // --- Adição dos Controles na Tela ---
+        const joystickBg = this.add.circle(120, 500, 50, 0x000000).setAlpha(0.5);
+        this.joystickThumb = this.add.circle(120, 500, 25, 0xffffff).setAlpha(0.7).setInteractive();
+
+        joystickBg.setScrollFactor(0);
+        this.joystickThumb.setScrollFactor(0);
+
+        this.input.setDraggable(this.joystickThumb);
+
+        this.joystickThumb.on('drag', (pointer, dragX, dragY) => {
+            const distance = Phaser.Math.Distance.Between(joystickBg.x, joystickBg.y, dragX, dragY);
+            if (distance < 50) {
+                this.joystickThumb.x = dragX;
+                this.joystickThumb.y = dragY;
+            } else {
+                const angle = Phaser.Math.Angle.Between(joystickBg.x, joystickBg.y, dragX, dragY);
+                this.joystickThumb.x = joystickBg.x + Math.cos(angle) * 50;
+                this.joystickThumb.y = joystickBg.y + Math.sin(angle) * 50;
+            }
+            this.joystickDirection = Phaser.Math.Angle.Between(joystickBg.x, joystickBg.y, this.joystickThumb.x, this.joystickThumb.y);
+        });
+
+        this.joystickThumb.on('dragend', () => {
+            this.joystickThumb.x = joystickBg.x;
+            this.joystickThumb.y = joystickBg.y;
+            this.joystickDirection = null;
+        });
+
+        this.jumpButton = this.add.circle(700, 500, 40, 0xff0000).setAlpha(0.6).setInteractive();
+        this.jumpButton.setScrollFactor(0);
+        
+        this.add.text(700, 500, 'Pular', { fontSize: '20px', fill: '#ffffff' }).setOrigin(0.5).setScrollFactor(0);
+
+        this.jumpButton.on('pointerdown', () => {
+            if (this.player.body.touching.down) {
+                this.player.setVelocityY(-330);
+            }
+        });
     }
 
     update() {
         if (gameOver) {
             return;
         }
-        
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
-        } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
+
+        if (this.joystickDirection !== null) {
+            if (this.joystickDirection < -2.5 || this.joystickDirection > 2.5) {
+                this.player.setVelocityX(-160);
+                this.player.anims.play('left', true);
+            } else if (this.joystickDirection > -0.5 && this.joystickDirection < 0.5) {
+                this.player.setVelocityX(160);
+                this.player.anims.play('right', true);
+            }
         } else {
             this.player.setVelocityX(0);
             this.player.anims.play('turn');
-        }
-
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
         }
     }
 

@@ -62,3 +62,6 @@ Onde posso encontrar a documentação oficial e a API Reference do Phaser?
 Quais são os melhores canais no YouTube, blogs ou tutoriais para iniciantes em Phaser?
 
 Existem comunidades ou fóruns de discussão (como Discord ou fóruns da própria biblioteca) onde posso pedir ajuda e compartilhar meu progresso?"
+
+
+Pronto para o próximo arquivo

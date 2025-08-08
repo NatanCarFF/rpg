@@ -1,5 +1,8 @@
 // GameWinScene.js
 
+// A variável global 'score' será declarada em main.js
+// As variáveis de cena são agora propriedades da classe, usando `this.`
+
 class GameWinScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameWinScene' });
