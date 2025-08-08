@@ -1,4 +1,4 @@
-// Fase3Scene.js
+// Fase4Scene.js
 
 let player;
 let platforms;
@@ -9,9 +9,9 @@ let score = 0;
 let scoreText;
 let gameOver = false;
 
-class Fase3Scene extends Phaser.Scene {
+class Fase4Scene extends Phaser.Scene {
     constructor() {
-        super({ key: 'Fase3Scene' });
+        super({ key: 'Fase4Scene' });
     }
 
     init(data) {
@@ -34,17 +34,16 @@ class Fase3Scene extends Phaser.Scene {
     create() {
         gameOver = false;
         
-        // Fundo com uma tonalidade escura para simular um desafio final
-        this.add.image(400, 300, 'sky').setTint(0x333333);
+        // Fundo com uma tonalidade avermelhada para a fase final
+        this.add.image(400, 300, 'sky').setTint(0xff9999);
         
         // Layout de plataformas mais complexo
         platforms = this.physics.add.staticGroup();
         platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-        platforms.create(600, 400, 'ground');
-        platforms.create(100, 450, 'ground');
-        platforms.create(500, 250, 'ground');
+        platforms.create(150, 400, 'ground');
+        platforms.create(650, 300, 'ground');
+        platforms.create(50, 200, 'ground');
         platforms.create(750, 150, 'ground');
-        platforms.create(250, 200, 'ground');
 
         player = this.physics.add.sprite(100, 450, 'dude');
         player.setBounce(0.2);
@@ -59,8 +58,8 @@ class Fase3Scene extends Phaser.Scene {
         // Mais moedas para coletar
         stars = this.physics.add.group({
             key: 'star',
-            repeat: 20,
-            setXY: { x: 12, y: 0, stepX: 38 }
+            repeat: 25,
+            setXY: { x: 12, y: 0, stepX: 30 }
         });
 
         stars.children.iterate(function (child) {
@@ -106,15 +105,15 @@ class Fase3Scene extends Phaser.Scene {
     }
 
     collectStar(player, star) {
-    star.disableBody(true, true);
-    score += 10;
-    scoreText.setText('Score: ' + score);
+        star.disableBody(true, true);
+        score += 10;
+        scoreText.setText('Score: ' + score);
 
-    if (stars.countActive(true) === 0) {
-        // Quando todas as moedas são coletadas, avança para a próxima fase
-        this.scene.start('Fase4Scene', { score: score });
+        if (stars.countActive(true) === 0) {
+            // Quando todas as moedas são coletadas, o jogo termina e vai para a tela de vitória
+            this.scene.start('GameWinScene', { score: score });
+        }
     }
-}
 
     hitBomb(player, bomb) {
         this.physics.pause();
