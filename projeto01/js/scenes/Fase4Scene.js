@@ -9,8 +9,8 @@
 // let scoreText;
 
 // Mantenha apenas as variáveis que precisam ser compartilhadas entre cenas.
-let score = 0;
-let gameOver = false;
+// let score = 0;
+// let gameOver = false;
 
 class Fase4Scene extends Phaser.Scene {
     constructor() {

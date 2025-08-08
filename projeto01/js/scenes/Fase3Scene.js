@@ -12,8 +12,8 @@
 
 // Mantenha apenas as variáveis que precisam ser globais, como 'score' e 'gameOver'.
 // ou as remova se já existirem no seu main.js
-let score = 0;
-let gameOver = false;
+// let score = 0;
+// let gameOver = false;
 
 class Fase3Scene extends Phaser.Scene {
     constructor() {
