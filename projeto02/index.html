@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crônicas da Floresta Sombria</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+
+        <canvas id="game-canvas"></canvas>
+
+        <div id="character-creation" class="game-menu active">
+            <h2>Crie seu Herói</h2>
+            <div class="menu-content">
+                <label for="char-name">Nome:</label>
+                <input type="text" id="char-name" placeholder="Digite seu nome">
+                <label for="char-class">Classe:</label>
+                <select id="char-class">
+                    <option value="guerreiro">Guerreiro</option>
+                    <option value="mago">Mago</option>
+                </select>
+                <button id="create-char-btn">Começar Aventura</button>
+            </div>
+        </div>
+
+        <div id="game-ui">
+            <div id="player-status">
+                <p>Nome: <span id="status-name"></span> | Nível: <span id="status-level"></span></p>
+                <p>Vida: <span id="status-hp"></span>/<span id="status-max-hp"></span></p>
+                <p>Mana: <span id="status-mp"></span>/<span id="status-max-mp"></span></p>
+            </div>
+
+            <div id="message-log"></div>
+
+            <div id="overlay-menus">
+                <div id="action-menu" class="game-menu">
+                    <h2>Seu Turno</h2>
+                    <div class="menu-content">
+                        <button class="combat-btn" id="attack-btn">Atacar</button>
+                        <button class="combat-btn" id="ability-btn">Habilidade</button>
+                        <button class="combat-btn" id="item-btn">Item</button>
+                    </div>
+                </div>
+
+                <div id="inventory-menu" class="game-menu">
+                    <h2>Inventário</h2>
+                    <ul id="inventory-list"></ul>
+                    <button id="close-inventory-btn">Fechar</button>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="navigation-controls">
+            <button id="move-up-btn" class="nav-btn">↑</button>
+            <button id="move-left-btn" class="nav-btn">←</button>
+            <button id="move-right-btn" class="nav-btn">→</button>
+            <button id="move-down-btn" class="nav-btn">↓</button>
+        </div>
+
+    </div>
+    
+    <script src="game.js"></script>
+    <script src="player.js"></script>
+    <script src="combat.js"></script>
+    <script src="exploration.js"></script>
+    
+</body>
+</html>
