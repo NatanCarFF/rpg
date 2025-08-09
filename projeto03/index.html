@@ -128,16 +128,24 @@
     </div>
 </div>
 
+<audio id="ambientAudio" src="audio.mp3" autoplay loop muted></audio>
+
 <script>
     const startButton = document.getElementById('startButton');
     const progressContainer = document.getElementById('progressContainer');
     const progressBar = document.getElementById('progressBar');
+    const ambientAudio = document.getElementById('ambientAudio');
 
     startButton.addEventListener('click', () => {
         // Desabilita o botão e adiciona a classe para o efeito de fumaça
         startButton.disabled = true;
         startButton.classList.add('disabled');
         startButton.textContent = "Carregando...";
+        
+        // Desmuta o áudio quando o botão é clicado
+        if (ambientAudio.muted) {
+            ambientAudio.muted = false;
+        }
         
         // Mostra a barra de progresso
         progressContainer.style.display = 'block';
