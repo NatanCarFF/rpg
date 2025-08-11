@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
             form.style.display = 'none';
             resetButton.style.display = 'block';
 
-            // Pede o nome do jogador e salva a pontuação na planilha
             const nomeJogador = prompt("Parabéns! Qual é o seu nome para o ranking?", "Anônimo");
             if (nomeJogador) {
                 await salvarPontuacao(nomeJogador, tentativas);
@@ -76,6 +75,5 @@ document.addEventListener('DOMContentLoaded', () => {
         iniciarNovoJogo();
     });
 
-    // Inicia o jogo quando a página carrega
     iniciarNovoJogo();
 });
