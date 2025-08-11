@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let numeroSecreto;
     let tentativas = 0;
 
-    const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbyr-SrNu570jTHtSnGRxzolQpC-b_h1JB89PkIcA2S54gyMiXcLaRaAUfVj82uP-eU4/exec";
+    const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbw7btiaPNPJ43Pc2-GqGYu-6rmr4wvwWW7JNLCcdoHLbWF3ZdAOvvzREXSf5M_FckRy/exec";
 
     const form = document.getElementById('jogo-form');
     const resultadoDiv = document.getElementById('resultado');
