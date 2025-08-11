@@ -29,10 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(googleAppsScriptUrl, {
                 method: 'POST',
-                body: JSON.stringify(dados),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: JSON.stringify(dados)
             });
     
             if (!response.ok) {
