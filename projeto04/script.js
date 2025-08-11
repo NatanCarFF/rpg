@@ -1,33 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let numeroSecreto;
+    let tentativas = 0;
+
+    const googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbyr-SrNu570jTHtSnGRxzolQpC-b_h1JB89PkIcA2S54gyMiXcLaRaAUfVj82uP-eU4/exec";
+
     const form = document.getElementById('jogo-form');
     const resultadoDiv = document.getElementById('resultado');
+    const resetButton = document.getElementById('reset-button');
+    const tentativaInput = document.getElementById('tentativa');
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Impede o envio padrão do formulário e o recarregamento da página
-
-        const formData = new FormData(form);
-        
+    function iniciarNovoJogo() {
+        numeroSecreto = Math.floor(Math.random() * 100) + 1;
+        tentativas = 0;
+        resultadoDiv.textContent = '';
+        form.style.display = 'block';
+        resetButton.style.display = 'none';
+        tentativaInput.value = '';
+        tentativaInput.focus();
+        console.log("Novo número secreto gerado: " + numeroSecreto);
+    }
+    
+    async function salvarPontuacao(nome, pontuacao) {
+        const dados = {
+            nome: nome,
+            pontuacao: pontuacao
+        };
+    
         try {
-            const response = await fetch('processar_jogo.php', {
+            const response = await fetch(googleAppsScriptUrl, {
                 method: 'POST',
-                body: formData
+                body: JSON.stringify(dados),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
-            const data = await response.json();
-            resultadoDiv.textContent = data.mensagem;
-            
-            // Se o usuário acertou, limpa o campo de entrada para o próximo jogo
-            if (data.mensagem.includes('Parabéns')) {
-                form.reset();
-            }
-
+    
+            console.log('Pontuação salva com sucesso!');
         } catch (error) {
-            console.error('Erro:', error);
-            resultadoDiv.textContent = 'Ocorreu um erro ao processar sua tentativa.';
+            console.error('Erro ao salvar a pontuação:', error);
         }
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const tentativa = parseInt(tentativaInput.value);
+        tentativas++;
+
+        if (isNaN(tentativa) || tentativa < 1 || tentativa > 100) {
+            resultadoDiv.textContent = 'Por favor, insira um número válido entre 1 e 100.';
+            return;
+        }
+        
+        let mensagem = '';
+        if (tentativa < numeroSecreto) {
+            mensagem = 'É mais alto!';
+        } else if (tentativa > numeroSecreto) {
+            mensagem = 'É mais baixo!';
+        } else {
+            mensagem = `Parabéns! Você acertou o número ${numeroSecreto} em ${tentativas} tentativas!`;
+            form.style.display = 'none';
+            resetButton.style.display = 'block';
+
+            // Pede o nome do jogador e salva a pontuação na planilha
+            const nomeJogador = prompt("Parabéns! Qual é o seu nome para o ranking?", "Anônimo");
+            if (nomeJogador) {
+                await salvarPontuacao(nomeJogador, tentativas);
+            }
+        }
+        resultadoDiv.textContent = mensagem;
     });
+
+    resetButton.addEventListener('click', () => {
+        iniciarNovoJogo();
+    });
+
+    // Inicia o jogo quando a página carrega
+    iniciarNovoJogo();
 });
